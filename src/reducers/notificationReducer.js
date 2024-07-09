@@ -5,11 +5,18 @@ const notificationSlice = createSlice({
       initialState: "NONE",
       reducers: {
             text(state, action){
-                  console.log('action ', action);
-                  return action.payload ? action.payload : state
+                  return action.payload
             }
       }
 });
 
 export const { text } = notificationSlice.actions;
+
+export const showNotification = (string, time)=> {
+    return async (dispatch)=> {
+        dispatch(text(string));
+        setTimeout(()=> dispatch(text('NONE')), time * 1000);
+    };
+};
+
 export default notificationSlice.reducer;

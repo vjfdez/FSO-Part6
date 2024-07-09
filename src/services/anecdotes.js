@@ -9,15 +9,27 @@ const getAll = async ()=> {
       return response.data;
 };
 
+const getAnecdote = async(id)=> {
+    const response = await axios.get(`${baseUrl}/${id}`);
+    return response.data;
+};
+
 const createNew = async (content)=> {
-    console.log('content ', content);
     const object = {
         content,
         id: getId(),
         votes: 0
-    }
+    };
+
     const response = await axios.post(baseUrl, object);
     return response.data;
 };
 
-export default { getAll, createNew };
+const voteAnecdote = async (id)=> {
+    const anecdote = await getAnecdote(id);
+    const anecdoteUpdated = {...anecdote, votes: anecdote.votes + 1};
+    const response = await axios.put(`${baseUrl}/${id}`, anecdoteUpdated);
+    return response.data;
+};
+
+export default { getAll, createNew, voteAnecdote };
